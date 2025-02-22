@@ -35,8 +35,16 @@
 <script>
     document.getElementById('checkWhois').addEventListener('click', function () {
         let domain = document.getElementById('domain').value.trim();
+
+        let domainRegex = /^(?!-)(?!.*--)([a-zA-Z0-9-]{1,63})+\.[a-zA-Z]{2,63}$/;
+
         if (!domain) {
             alert('Введіть домен!');
+            return;
+        }
+
+        if (!domainRegex.test(domain)) {
+            alert("Некорректний домен! Введіть коректне ім'я, наприклад: example.com");
             return;
         }
 
@@ -58,11 +66,12 @@
             })
             .catch(error => {
                 document.getElementById('loading').classList.add('d-none');
-                document.getElementById('whoisData').textContent = "Помилка запроса";
+                document.getElementById('whoisData').textContent = "Помилка запросу";
                 document.getElementById('result').classList.remove('d-none');
             });
     });
 </script>
+
 
 </body>
 </html>
