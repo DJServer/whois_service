@@ -1,8 +1,13 @@
 <?php
+
 namespace App\Application\Services;
+
+use App\Domain\Repositories\WhoisRepositoryInterface;
 
 class WhoisService
 {
+    public function __construct(private WhoisRepositoryInterface $whoisRepository) {}
+
     public function lookup(string $domain): ?string
     {
         $whoisServer = $this->getWhoisServerFromIANA($domain);
@@ -11,7 +16,13 @@ class WhoisService
             return "WHOIS-сервер не знайдено для $domain";
         }
 
-        return $this->queryWhoisServer($whoisServer, $domain);
+        $whoisResponse = $this->queryWhoisServer($whoisServer, $domain);
+
+        if ($whoisResponse) {
+            $this->whoisRepository->save($domain, $whoisResponse);
+        }
+
+        return $whoisResponse;
     }
 
     private function getWhoisServerFromIANA(string $domain): ?string
