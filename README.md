@@ -45,3 +45,6 @@ URL WHOIS-чека:
 
 http://127.0.0.1/api/whois?domain=
 
+Сторінка історії запросів 
+
+http://127.0.0.1/whois/history
